@@ -1,0 +1,94 @@
+---
+import { SITE_TITLE } from "../consts";
+import HeaderLink from "./HeaderLink.astro";
+---
+
+<header id="main-header">
+	<nav>
+		<a href="/" class="logo pixel-font">
+			<span class="logo-star">✦</span>
+			{SITE_TITLE}
+		</a>
+		<div class="nav-links">
+			<HeaderLink href="/">Home</HeaderLink>
+			<HeaderLink href="/blog">Blog</HeaderLink>
+			<HeaderLink href="/about">About</HeaderLink>
+		</div>
+	</nav>
+</header>
+<style>
+	header {
+		padding: 0 1.5em;
+		background: rgba(184, 165, 212, 0.85);
+		backdrop-filter: blur(8px);
+		-webkit-backdrop-filter: blur(8px);
+		border-bottom: 3px solid var(--border-window);
+	}
+	nav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		max-width: 960px;
+		margin: 0 auto;
+		height: 56px;
+	}
+	.logo {
+		display: flex;
+		align-items: center;
+		gap: 0.4em;
+		text-decoration: none;
+		color: #fff;
+		font-size: 1.3em;
+		transition: opacity var(--transition-fast);
+	}
+	.logo:hover {
+		opacity: 0.85;
+		text-decoration: none;
+	}
+	.logo-star {
+		font-size: 1.2em;
+		color: #ffd700;
+	}
+	.nav-links {
+		display: flex;
+		align-items: center;
+		gap: 0.25em;
+	}
+	.nav-links :global(a) {
+		padding: 0.4em 0.8em;
+		color: #fff;
+		font-size: 0.9em;
+		font-family: "DotGothic16", monospace;
+		font-weight: 400;
+		transition: all var(--transition-fast);
+		text-decoration: none;
+		border: 2px solid transparent;
+	}
+	.nav-links :global(a:hover) {
+		color: #fff;
+		background: rgba(255, 255, 255, 0.15);
+		border-color: rgba(255, 255, 255, 0.3);
+		text-decoration: none;
+	}
+	.nav-links :global(a.active) {
+		color: #fff;
+		background: var(--accent);
+		border-color: var(--accent-dark);
+		text-decoration: none;
+	}
+	@media (max-width: 768px) {
+		header {
+			padding: 0 0.75em;
+		}
+		nav {
+			height: 48px;
+		}
+		.logo {
+			font-size: 1.1em;
+		}
+		.nav-links :global(a) {
+			padding: 0.3em 0.5em;
+			font-size: 0.8em;
+		}
+	}
+</style>

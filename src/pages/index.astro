@@ -1,0 +1,379 @@
+---
+import { getCollection } from "astro:content";
+import BaseHead from "../components/BaseHead.astro";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import LoadingScreen from "../components/LoadingScreen.astro";
+
+const posts = (await getCollection("blog")).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const latestPosts = posts.slice(0, 5);
+---
+
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			/* Hero Banner */
+			.hero-banner {
+				width: 100%;
+				max-width: 960px;
+				margin: 1.5em auto 2em;
+				padding: 0 1em;
+			}
+			.hero-banner img {
+				width: 100%;
+				display: block;
+				border: 3px solid var(--border-window);
+				box-shadow: var(--box-shadow-window);
+				image-rendering: auto;
+			}
+
+			/* Main Layout - Two Window Panels */
+			.desktop-layout {
+				display: flex;
+				gap: 1.5em;
+				max-width: 960px;
+				margin: 0 auto;
+				padding: 0 1em;
+				align-items: flex-start;
+			}
+
+			/* Left Sidebar - Category Window */
+			.sidebar-window {
+				width: 280px;
+				flex-shrink: 0;
+				border: 3px solid var(--border-window);
+				box-shadow: var(--box-shadow-window);
+				background: var(--bg-window-body);
+			}
+			.sidebar-body {
+				padding: 1.25em;
+			}
+			.sidebar-body h3 {
+				font-family: "DotGothic16", monospace;
+				font-size: 1em;
+				color: var(--accent-dark);
+				margin-bottom: 1em;
+				padding-bottom: 0.5em;
+				border-bottom: 2px dashed var(--border-color);
+			}
+			.sidebar-nav {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			.sidebar-nav li {
+				margin-bottom: 0.5em;
+			}
+			.sidebar-nav a {
+				display: flex;
+				align-items: center;
+				gap: 0.6em;
+				padding: 0.5em 0.75em;
+				color: var(--text-primary);
+				text-decoration: none;
+				font-family: "DotGothic16", monospace;
+				font-size: 0.9em;
+				border: 2px solid transparent;
+				transition: all var(--transition-fast);
+			}
+			.sidebar-nav a:hover {
+				background: rgba(255, 255, 255, 0.5);
+				border-color: var(--border-window);
+				text-decoration: none;
+			}
+			.sidebar-nav .nav-icon {
+				font-size: 1.1em;
+			}
+
+			/* Right Main - Content Window */
+			.main-window {
+				flex: 1;
+				min-width: 0;
+			}
+
+			/* Browser-style content window */
+			.content-browser {
+				border: 3px solid var(--border-window);
+				box-shadow: var(--box-shadow-window);
+				background: var(--bg-content);
+			}
+			.browser-titlebar {
+				background: var(--accent-light);
+				padding: 4px 10px;
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				min-height: 24px;
+				border-bottom: 2px solid var(--border-window);
+			}
+			.browser-btn {
+				width: 18px;
+				height: 18px;
+				border: 2px solid var(--border-window);
+				background: var(--bg-window-body);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-size: 9px;
+				color: var(--accent-dark);
+				cursor: default;
+				margin-left: 3px;
+			}
+			.browser-toolbar {
+				background: var(--bg-window-body);
+				padding: 6px 10px;
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				border-bottom: 2px solid var(--border-window);
+			}
+			.browser-nav-btn {
+				font-family: "DotGothic16", monospace;
+				font-size: 14px;
+				color: var(--accent-dark);
+				cursor: default;
+				background: none;
+				border: none;
+				padding: 0 2px;
+			}
+			.browser-home-icon {
+				font-size: 13px;
+				color: var(--accent-dark);
+			}
+			.browser-url {
+				flex: 1;
+				background: var(--bg-content);
+				border: 2px solid var(--border-window);
+				padding: 3px 8px;
+				font-family: "DotGothic16", monospace;
+				font-size: 11px;
+				color: var(--text-muted);
+				display: flex;
+				align-items: center;
+				gap: 4px;
+			}
+			.browser-url-globe {
+				font-size: 12px;
+			}
+			.browser-actions {
+				display: flex;
+				gap: 6px;
+				font-size: 13px;
+				color: var(--accent-dark);
+			}
+			.browser-body {
+				padding: 1.5em;
+			}
+
+			/* Post list inside browser */
+			.post-list {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+			}
+			.post-list li {
+				margin-bottom: 0;
+			}
+			.post-link {
+				display: flex;
+				align-items: center;
+				gap: 0.75em;
+				padding: 0.75em;
+				text-decoration: none;
+				color: var(--text-primary);
+				border-bottom: 1px dashed var(--border-color);
+				transition: all var(--transition-fast);
+			}
+			.post-link:hover {
+				background: rgba(255, 209, 220, 0.4);
+				text-decoration: none;
+			}
+			.post-link:last-child {
+				border-bottom: none;
+			}
+			.post-link .folder-icon {
+				width: 36px;
+				height: auto;
+				image-rendering: pixelated;
+			}
+			.post-link-info {
+				flex: 1;
+				min-width: 0;
+			}
+			.post-link-title {
+				font-family: "DotGothic16", monospace;
+				font-size: 0.95em;
+				color: var(--text-primary);
+				margin: 0 0 0.2em;
+				transition: color var(--transition-fast);
+			}
+			.post-link:hover .post-link-title {
+				color: var(--accent-dark);
+			}
+			.post-link-date {
+				font-size: 0.78em;
+				color: var(--text-muted);
+				font-family: "DotGothic16", monospace;
+			}
+
+			/* View All button */
+			.view-all {
+				display: block;
+				text-align: center;
+				padding: 0.75em;
+				font-family: "DotGothic16", monospace;
+				font-size: 0.9em;
+				color: var(--accent-dark);
+				border-top: 2px dashed var(--border-color);
+				text-decoration: none;
+				transition: background var(--transition-fast);
+			}
+			.view-all:hover {
+				background: rgba(255, 209, 220, 0.4);
+				text-decoration: none;
+			}
+
+			@media (max-width: 768px) {
+				.desktop-layout {
+					flex-direction: column;
+				}
+				.sidebar-window {
+					width: 100%;
+				}
+				.hero-banner {
+					margin: 1em auto 1.5em;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<LoadingScreen />
+		<Header />
+
+		<!-- Hero Banner -->
+		<div class="hero-banner">
+			<img
+				src="/intro.png"
+				alt="Sutto Log - Don't be humble when you start working"
+			/>
+		</div>
+
+		<!-- Two Panel Layout -->
+		<div class="desktop-layout">
+			<!-- Left: Category Sidebar -->
+			<aside class="sidebar-window">
+				<div class="retro-titlebar">
+					<span class="retro-titlebar-text">Category</span>
+					<div class="retro-titlebar-buttons">
+						<span class="retro-btn">_</span>
+						<span class="retro-btn">□</span>
+						<span class="retro-btn">✕</span>
+					</div>
+				</div>
+				<div class="sidebar-body">
+					<h3>✦ Navigation</h3>
+					<ul class="sidebar-nav">
+						<li>
+							<a href="/"><span class="nav-icon">🏠</span> Home</a
+							>
+						</li>
+						<li>
+							<a href="/blog"
+								><span class="nav-icon">📂</span> Blog Posts</a
+							>
+						</li>
+						<li>
+							<a href="/about"
+								><span class="nav-icon">💜</span> About Me</a
+							>
+						</li>
+					</ul>
+					<h3 style="margin-top:1.5em;">✦ Recent Posts</h3>
+					<ul class="sidebar-nav">
+						{
+							latestPosts.slice(0, 3).map((post) => (
+								<li>
+									<a href={`/blog/${post.id}/`}>
+										<span class="nav-icon">📝</span>
+										<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+											{post.data.title}
+										</span>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</div>
+			</aside>
+
+			<!-- Right: Main Content Browser -->
+			<div class="main-window">
+				<div class="content-browser">
+					<div class="browser-titlebar">
+						<div class="retro-titlebar-buttons">
+							<span class="browser-btn">_</span>
+							<span class="browser-btn">□</span>
+							<span class="browser-btn">✕</span>
+						</div>
+					</div>
+					<div class="browser-toolbar">
+						<span class="browser-nav-btn">←</span>
+						<span class="browser-nav-btn">→</span>
+						<span class="browser-home-icon">🏠</span>
+						<div class="browser-url">
+							<span class="browser-url-globe">🌐</span>
+							suttolog.netlify.app
+						</div>
+						<div class="browser-actions">
+							<span>⭐</span>
+							<span>☰</span>
+						</div>
+					</div>
+					<div class="browser-body">
+						<ul class="post-list">
+							{
+								latestPosts.map((post) => (
+									<li>
+										<a
+											href={`/blog/${post.id}/`}
+											class="post-link"
+										>
+											<img
+												src="/folder_icon.png"
+												alt=""
+												class="folder-icon"
+											/>
+											<div class="post-link-info">
+												<p class="post-link-title">
+													{post.data.title}
+												</p>
+												<span class="post-link-date">
+													{post.data.pubDate.toLocaleDateString(
+														"ko-KR",
+														{
+															year: "numeric",
+															month: "long",
+															day: "numeric",
+														}
+													)}
+												</span>
+											</div>
+										</a>
+									</li>
+								))
+							}
+						</ul>
+						<a href="/blog" class="view-all">📂 View all posts →</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<Footer />
+	</body>
+</html>

@@ -1,0 +1,289 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import LoadingScreen from "../components/LoadingScreen.astro";
+import { SITE_TITLE } from "../consts";
+---
+
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<BaseHead
+			title={`About | ${SITE_TITLE}`}
+			description="안녕하세요, Sutto Log 운영자입니다."
+		/>
+		<style>
+			.about-layout {
+				max-width: 720px;
+				margin: 2em auto;
+				padding: 0 1em;
+			}
+			.about-window {
+				border: 3px solid var(--border-window);
+				box-shadow: var(--box-shadow-window);
+				background: var(--bg-window-body);
+			}
+			.about-body {
+				padding: 2em;
+			}
+			.about-body h2 {
+				font-family: "DotGothic16", monospace;
+				color: var(--accent-dark);
+				font-size: 1.3em;
+				margin-top: 1.8em;
+				margin-bottom: 0.6em;
+				padding-bottom: 0.3em;
+				border-bottom: 2px dashed var(--border-color);
+			}
+			.about-body h2:first-child {
+				margin-top: 0;
+			}
+			.about-body p {
+				color: var(--text-secondary);
+				line-height: 1.8;
+			}
+			.about-body ul {
+				color: var(--text-secondary);
+				padding-left: 1.2em;
+			}
+			.about-body li {
+				margin-bottom: 0.5em;
+			}
+			.about-body strong {
+				color: var(--text-primary);
+			}
+			/* Love Rain Effect */
+			.love-rain-overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+				z-index: 100;
+				overflow: hidden;
+			}
+			.love-rain-drop {
+				position: absolute;
+				top: -300px;
+				height: auto;
+				image-rendering: pixelated;
+				animation: loveRainFall linear infinite;
+			}
+			@keyframes loveRainFall {
+				0% {
+					transform: translateY(-100%);
+					opacity: 0;
+				}
+				5% {
+					opacity: 1;
+				}
+				95% {
+					opacity: 1;
+				}
+				100% {
+					transform: translateY(calc(100vh + 300px));
+					opacity: 0;
+				}
+			}
+			.love-rain-drop:nth-child(1) {
+				left: 1%;
+				width: 160px;
+				animation-duration: 4.5s;
+				animation-delay: 0s;
+			}
+			.love-rain-drop:nth-child(2) {
+				left: 8%;
+				width: 120px;
+				animation-duration: 5.5s;
+				animation-delay: 0.8s;
+			}
+			.love-rain-drop:nth-child(3) {
+				left: 15%;
+				width: 180px;
+				animation-duration: 5s;
+				animation-delay: 0.3s;
+			}
+			.love-rain-drop:nth-child(4) {
+				left: 22%;
+				width: 130px;
+				animation-duration: 6s;
+				animation-delay: 2s;
+			}
+			.love-rain-drop:nth-child(5) {
+				left: 30%;
+				width: 150px;
+				animation-duration: 4.8s;
+				animation-delay: 1s;
+			}
+			.love-rain-drop:nth-child(6) {
+				left: 37%;
+				width: 170px;
+				animation-duration: 5.2s;
+				animation-delay: 0.5s;
+			}
+			.love-rain-drop:nth-child(7) {
+				left: 44%;
+				width: 140px;
+				animation-duration: 5.8s;
+				animation-delay: 1.5s;
+			}
+			.love-rain-drop:nth-child(8) {
+				left: 51%;
+				width: 160px;
+				animation-duration: 4.6s;
+				animation-delay: 0.2s;
+			}
+			.love-rain-drop:nth-child(9) {
+				left: 58%;
+				width: 120px;
+				animation-duration: 5.4s;
+				animation-delay: 2.5s;
+			}
+			.love-rain-drop:nth-child(10) {
+				left: 65%;
+				width: 190px;
+				animation-duration: 5s;
+				animation-delay: 0.7s;
+			}
+			.love-rain-drop:nth-child(11) {
+				left: 72%;
+				width: 130px;
+				animation-duration: 4.4s;
+				animation-delay: 1.8s;
+			}
+			.love-rain-drop:nth-child(12) {
+				left: 78%;
+				width: 150px;
+				animation-duration: 5.6s;
+				animation-delay: 0.4s;
+			}
+			.love-rain-drop:nth-child(13) {
+				left: 85%;
+				width: 170px;
+				animation-duration: 4.9s;
+				animation-delay: 3s;
+			}
+			.love-rain-drop:nth-child(14) {
+				left: 92%;
+				width: 140px;
+				animation-duration: 5.3s;
+				animation-delay: 1.2s;
+			}
+			.love-rain-drop:nth-child(15) {
+				left: 5%;
+				width: 100px;
+				animation-duration: 6.5s;
+				animation-delay: 3.5s;
+			}
+			.love-rain-drop:nth-child(16) {
+				left: 18%;
+				width: 200px;
+				animation-duration: 4.2s;
+				animation-delay: 2.8s;
+			}
+			.love-rain-drop:nth-child(17) {
+				left: 40%;
+				width: 110px;
+				animation-duration: 6s;
+				animation-delay: 4s;
+			}
+			.love-rain-drop:nth-child(18) {
+				left: 55%;
+				width: 180px;
+				animation-duration: 4.7s;
+				animation-delay: 3.2s;
+			}
+			.love-rain-drop:nth-child(19) {
+				left: 75%;
+				width: 160px;
+				animation-duration: 5.1s;
+				animation-delay: 2.2s;
+			}
+			.love-rain-drop:nth-child(20) {
+				left: 88%;
+				width: 120px;
+				animation-duration: 5.9s;
+				animation-delay: 4.5s;
+			}
+		</style>
+	</head>
+	<body>
+		<LoadingScreen />
+		<!-- Love Rain Effect -->
+		<div class="love-rain-overlay">
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+			<img src="/love_rain.gif" alt="" class="love-rain-drop" />
+		</div>
+		<Header />
+		<div class="about-layout">
+			<div class="about-window">
+				<div class="retro-titlebar">
+					<span class="retro-titlebar-text">About Me</span>
+					<div class="retro-titlebar-buttons">
+						<span class="retro-btn">_</span>
+						<span class="retro-btn">□</span>
+						<span class="retro-btn">✕</span>
+					</div>
+				</div>
+				<div class="about-body">
+					<h2>👋 안녕하세요!</h2>
+					<p>
+						개발을 사랑하는 엔지니어입니다. 이 블로그는 개발하면서
+						배운 것들, 기술적인 고민들, 그리고 성장의 기록을 담기
+						위해 만들었습니다.
+					</p>
+
+					<h2>🛠️ 기술 스택</h2>
+					<p>
+						주로 웹 개발을 하며, 프론트엔드와 백엔드 모두에 관심을
+						가지고 있습니다. 새로운 기술을 배우고 프로젝트에
+						적용하는 것을 즐깁니다.
+					</p>
+
+					<h2>📝 블로그에서 다루는 주제</h2>
+					<ul>
+						<li>
+							<strong>개발 경험</strong> - 프로젝트를 진행하면서 겪은
+							경험과 교훈
+						</li>
+						<li>
+							<strong>기술 리뷰</strong> - 새로운 기술과 도구에 대한
+							솔직한 리뷰
+						</li>
+						<li>
+							<strong>튜토리얼</strong> - 배운 것들을 정리한 가이드
+						</li>
+						<li><strong>회고</strong> - 주기적인 성장 돌아보기</li>
+					</ul>
+
+					<h2>📮 연락</h2>
+					<p>
+						궁금한 점이나 함께 하고 싶은 프로젝트가 있다면 언제든
+						연락해주세요. GitHub를 통해 소통하실 수 있습니다.
+					</p>
+				</div>
+			</div>
+		</div>
+		<Footer />
+	</body>
+</html>

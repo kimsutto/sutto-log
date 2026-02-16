@@ -1,0 +1,96 @@
+---
+const today = new Date();
+---
+
+<footer>
+	<div class="footer-content">
+		<div class="footer-window">
+			<div class="retro-titlebar">
+				<span class="retro-titlebar-text">footer.exe</span>
+				<div class="retro-titlebar-buttons">
+					<span class="retro-btn">_</span>
+					<span class="retro-btn">□</span>
+					<span class="retro-btn">✕</span>
+				</div>
+			</div>
+			<div class="footer-body">
+				<p class="footer-brand pixel-font">✦ Sutto Log ✦</p>
+				<p class="footer-desc">
+					Don't be humble when you start working
+				</p>
+				<div class="footer-links">
+					<a href="/">Home</a>
+					<span class="footer-dot">•</span>
+					<a href="/blog">Blog</a>
+					<span class="footer-dot">•</span>
+					<a href="/about">About</a>
+				</div>
+				<p class="footer-copy">
+					&copy; {today.getFullYear()} Sutto Log. Built with <a
+						href="https://astro.build/"
+						target="_blank">Astro</a
+					> ♡
+				</p>
+			</div>
+		</div>
+	</div>
+</footer>
+<style>
+	footer {
+		margin-top: 3em;
+		padding: 0 1em 2em;
+	}
+	.footer-content {
+		max-width: 960px;
+		margin: 0 auto;
+	}
+	.footer-window {
+		border: 3px solid var(--border-window);
+		box-shadow: var(--box-shadow-window);
+		background: var(--bg-window-body);
+	}
+	.footer-body {
+		padding: 1.5em;
+		text-align: center;
+	}
+	.footer-brand {
+		font-size: 1.2em;
+		color: var(--accent-dark);
+		margin: 0 0 0.3em;
+	}
+	.footer-desc {
+		font-family: "DotGothic16", monospace;
+		font-size: 0.85em;
+		color: var(--text-muted);
+		margin: 0 0 1em;
+	}
+	.footer-links {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 0.75em;
+		margin-bottom: 1em;
+	}
+	.footer-links a {
+		color: var(--text-secondary);
+		text-decoration: none;
+		font-family: "DotGothic16", monospace;
+		font-size: 0.85em;
+		transition: color var(--transition-fast);
+	}
+	.footer-links a:hover {
+		color: var(--accent);
+	}
+	.footer-dot {
+		color: var(--accent-light);
+		font-size: 0.8em;
+	}
+	.footer-copy {
+		font-size: 0.8em;
+		color: var(--text-muted);
+		margin: 0;
+	}
+	.footer-copy a {
+		color: var(--accent);
+	}
+</style>
